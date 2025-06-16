@@ -69,3 +69,34 @@ resource "aws_sns_topic_subscription" "email_sub" {
   protocol  = "email"
   endpoint  = "aditya3011.1990@gmail.com"  # 👈 Replace with your email
 }
+resource "aws_db_instance" "devops_db" {
+  allocated_storage    = 20
+  engine               = "mysql"
+  engine_version       = "8.0"
+  instance_class       = "db.t3.micro"
+  db_name              = "devopsdb"
+  username             = "admin"
+  password             = "DevOps123"
+  parameter_group_name = "default.mysql8.0"
+  skip_final_snapshot  = true
+  publicly_accessible  = false
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
+}
+resource "aws_security_group" "db_sg" {
+  name        = "allow_ec2_to_rds"
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    security_groups = [aws_security_group.ssh_access.id] # allow EC2 SG
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
