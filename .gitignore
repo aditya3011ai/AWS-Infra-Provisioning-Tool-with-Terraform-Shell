@@ -1,10 +1,6 @@
 # Ignore common DevOps/project junk
-node_modules/
 .terraform/
-venv/
-__pycache__/
-*.log
-*.zip
-*.tar.gz
-.idea/
-.vscode/
+*.tfstate
+*.tfstate.backup
+*.pem
+
